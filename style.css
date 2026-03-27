@@ -1279,7 +1279,10 @@ footer a:focus-visible {
 }
 .reveal {
 	opacity: 0;
-	animation: fadeUp 0.55s var(--ease) forwards;
+	/* animation: fadeUp 0.55s var(--ease) forwards; */
+}
+.in-view.reveal {
+    animation: fadeUp 0.55s var(--ease) forwards;
 }
 .reveal.d1 {
 	animation-delay: 0.08s;

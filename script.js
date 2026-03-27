@@ -268,8 +268,8 @@ const projects = [
 		},
 	);
 
-	document.querySelectorAll(".proj-card").forEach((card) => {
-		observer.observe(card);
+	document.querySelectorAll(".reveal").forEach((el) => {
+		observer.observe(el);
 	});
 
 	// Re-observa cards que aparecem após filtro ser aplicado
