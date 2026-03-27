@@ -163,7 +163,6 @@ const projects = [
 	if (!el) return;
 	let n = 0;
 	const target = projects.length;
-	// Respeita prefers-reduced-motion
 	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 		el.innerHTML = target + "<span>+</span>";
 		el.setAttribute("aria-label", `Mais de ${target} projetos entregues`);
@@ -177,13 +176,113 @@ const projects = [
 	}, 80);
 })();
 
+/* ─── HAMBURGER MENU ─────────────────────────────────────── */
+(function () {
+	const hamburger = document.getElementById("navHamburger");
+	const mobileMenu = document.getElementById("mobileMenu");
+	if (!hamburger || !mobileMenu) return;
+
+	let isOpen = false;
+
+	function openMenu() {
+		isOpen = true;
+		hamburger.setAttribute("aria-expanded", "true");
+		hamburger.setAttribute("aria-label", "Fechar menu");
+		mobileMenu.classList.add("open");
+		document.body.style.overflow = "hidden";
+		// Move foco para o primeiro link do menu
+		const firstLink = mobileMenu.querySelector(".mob-link, .mob-cta");
+		if (firstLink) setTimeout(() => firstLink.focus(), 50);
+	}
+
+	function closeMenu() {
+		isOpen = false;
+		hamburger.setAttribute("aria-expanded", "false");
+		hamburger.setAttribute("aria-label", "Abrir menu");
+		mobileMenu.classList.remove("open");
+		document.body.style.overflow = "";
+		hamburger.focus();
+	}
+
+	hamburger.addEventListener("click", () => {
+		isOpen ? closeMenu() : openMenu();
+	});
+
+	// Fecha ao clicar em qualquer link do menu
+	mobileMenu.querySelectorAll("a").forEach((link) => {
+		link.addEventListener("click", closeMenu);
+	});
+
+	// Fecha com ESC
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape" && isOpen) closeMenu();
+	});
+
+	// Fecha ao redimensionar para desktop
+	window.addEventListener("resize", () => {
+		if (window.innerWidth > 768 && isOpen) closeMenu();
+	});
+
+	// Trap de foco dentro do menu mobile
+	mobileMenu.addEventListener("keydown", (e) => {
+		if (e.key !== "Tab") return;
+		const focusable = Array.from(
+			mobileMenu.querySelectorAll("a, button"),
+		).filter((el) => getComputedStyle(el).display !== "none");
+		if (!focusable.length) return;
+		const first = focusable[0];
+		const last = focusable[focusable.length - 1];
+		if (e.shiftKey && document.activeElement === first) {
+			e.preventDefault();
+			hamburger.focus();
+		} else if (!e.shiftKey && document.activeElement === last) {
+			e.preventDefault();
+			hamburger.focus();
+		}
+	});
+})();
+
+/* ─── SCROLL REVEAL (IntersectionObserver) ───────────────── */
+(function () {
+	// Respeita preferência de movimento reduzido
+	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		document.querySelectorAll(".proj-card").forEach((card) => {
+			card.classList.add("in-view");
+		});
+		return;
+	}
+
+	const observer = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add("in-view");
+					// Para de observar após revelar (one-shot)
+					observer.unobserve(entry.target);
+				}
+			});
+		},
+		{
+			threshold: 0.08, // 8% visível já dispara
+			rootMargin: "0px 0px -40px 0px", // pequena margem inferior
+		},
+	);
+
+	document.querySelectorAll(".proj-card").forEach((card) => {
+		observer.observe(card);
+	});
+
+	// Re-observa cards que aparecem após filtro ser aplicado
+	window.__reobserveCards = () => {
+		document.querySelectorAll(".proj-card:not(.hidden)").forEach((card) => {
+			if (!card.classList.contains("in-view")) {
+				observer.observe(card);
+			}
+		});
+	};
+})();
+
 /* ─── CARD IMAGE BEHAVIOR ────────────────────────────────── */
-/**
- * Para cada .proj-img com <img>:
- *   - Se a imagem natural for >= 1.8x a altura do container → .is-tall (scroll)
- *     e calcula --scroll-dist exato para chegar ao fundo.
- *   - Caso contrário → .is-short (zoom).
- */
 function initCardImages() {
 	document.querySelectorAll(".proj-img").forEach((wrapper) => {
 		const img = wrapper.querySelector("img");
@@ -195,15 +294,12 @@ function initCardImages() {
 			const naturalW = img.naturalWidth;
 			if (!naturalH || !containerH) return;
 
-			// Altura que a imagem vai ocupar quando width:100%
 			const renderedH = (naturalH / naturalW) * wrapper.clientWidth;
 			const ratio = renderedH / containerH;
 
 			if (ratio >= 1.8) {
 				wrapper.classList.add("is-tall");
 				wrapper.classList.remove("is-short");
-				// translateY negativo para chegar ao fundo:
-				// deslocamento = (renderedH - containerH) / renderedH * 100 (em %)
 				const pct = ((renderedH - containerH) / renderedH) * 100;
 				wrapper.style.setProperty(
 					"--scroll-dist",
@@ -223,7 +319,6 @@ function initCardImages() {
 	});
 }
 
-// Reclassifica se a janela for redimensionada (grid muda de largura)
 window.addEventListener("resize", () => {
 	document
 		.querySelectorAll(".proj-img.is-tall, .proj-img.is-short")
@@ -252,7 +347,6 @@ function handleNavLogo(input) {
 /* ─── FILTER ─────────────────────────────────────────────── */
 document.querySelectorAll(".filter-btn").forEach((btn) => {
 	btn.addEventListener("click", () => {
-		// Atualiza estado visual e aria-pressed
 		document.querySelectorAll(".filter-btn").forEach((b) => {
 			b.classList.remove("active");
 			b.setAttribute("aria-pressed", "false");
@@ -272,23 +366,21 @@ document.querySelectorAll(".filter-btn").forEach((btn) => {
 
 		const emptyState = document.getElementById("emptyState");
 		emptyState.classList.toggle("show", visible === 0);
-
-		// Anuncia resultado para leitores de tela
 		emptyState.setAttribute(
 			"aria-label",
 			visible === 0
 				? "Nenhum projeto encontrado nesta categoria."
 				: `${visible} projeto${visible > 1 ? "s" : ""} encontrado${visible > 1 ? "s" : ""}.`,
 		);
+
+		// Re-observa cards recém-exibidos para scroll reveal
+		if (window.__reobserveCards) window.__reobserveCards();
 	});
 });
 
 /* ─── MODAL ──────────────────────────────────────────────── */
-
-// Elemento que abriu o modal (para restaurar foco ao fechar)
 let lastFocusedElement = null;
 
-// Todos os elementos focáveis dentro do modal
 function getFocusableElements(container) {
 	return Array.from(
 		container.querySelectorAll(
@@ -300,7 +392,6 @@ function getFocusableElements(container) {
 	);
 }
 
-// Trap de foco: mantém o foco dentro do modal enquanto estiver aberto
 function trapFocus(e) {
 	const modal = document.getElementById("modal");
 	const focusable = getFocusableElements(modal);
@@ -325,14 +416,11 @@ function trapFocus(e) {
 }
 
 document.querySelectorAll(".proj-card").forEach((card) => {
-	// Clique
 	card.addEventListener("click", (e) => {
-		// Evita abrir modal se o clique foi no link direto (proj-arrow <a>)
 		if (e.target.closest("a.proj-arrow")) return;
 		openModal(parseInt(card.dataset.id));
 	});
 
-	// Teclado: Enter e Espaço abrem o modal
 	card.addEventListener("keydown", (e) => {
 		if (e.key === "Enter" || e.key === " ") {
 			e.preventDefault();
@@ -346,10 +434,8 @@ function openModal(id) {
 	const p = projects.find((proj) => proj.id === id);
 	if (!p) return;
 
-	// Guarda quem abriu para restaurar foco depois
 	lastFocusedElement = document.activeElement;
 
-	// Imagem
 	const imgEl = document.getElementById("modalImg");
 	imgEl.innerHTML = p.imgSrc
 		? `<img src="${p.imgSrc}" alt="Imagem do projeto ${p.title}" class="loaded">`
@@ -358,7 +444,6 @@ function openModal(id) {
 				<span>Sem imagem</span>
 			</div>`;
 
-	// Conteúdo
 	document.getElementById("modalCat").textContent = p.cat;
 	document.getElementById("modalTitle").textContent = p.title;
 	document.getElementById("modalClient").innerHTML =
@@ -366,7 +451,6 @@ function openModal(id) {
 		 ${p.client} &nbsp;·&nbsp; ${p.year}`;
 	document.getElementById("modalDesc").textContent = p.desc;
 
-	// Métricas
 	document.getElementById("modalMetrics").innerHTML = p.metrics
 		.map(
 			(m) =>
@@ -377,33 +461,23 @@ function openModal(id) {
 		)
 		.join("");
 
-	// Tecnologias
-	document.getElementById("modalTechs").innerHTML = p.techs
-		.map((t) => `<span class="modal-tag">${t}</span>`)
-		.join("");
-
-	// Funcionalidades
 	document.getElementById("modalFeats").innerHTML = p.features
 		.map((f) => `<div class="modal-feat">${f}</div>`)
 		.join("");
 
-	// Abre o overlay
 	const overlay = document.getElementById("modalOverlay");
 	overlay.classList.add("open");
 	overlay.setAttribute("aria-hidden", "false");
 	document.body.style.overflow = "hidden";
 
-	// Move foco para o título do modal
 	const titleEl = document.getElementById("modalTitle");
 	titleEl.setAttribute("tabindex", "-1");
 	titleEl.focus();
 
-	// Ativa trap de foco
 	document.addEventListener("keydown", trapFocus);
 }
 
 function closeModal(e) {
-	// Fecha só se clicou no overlay em si ou no botão fechar
 	if (
 		e &&
 		e.target !== document.getElementById("modalOverlay") &&
@@ -420,17 +494,14 @@ function _doCloseModal() {
 	overlay.setAttribute("aria-hidden", "true");
 	document.body.style.overflow = "";
 
-	// Remove trap de foco
 	document.removeEventListener("keydown", trapFocus);
 
-	// Restaura foco para o elemento que abriu o modal
 	if (lastFocusedElement) {
 		lastFocusedElement.focus();
 		lastFocusedElement = null;
 	}
 }
 
-// ESC fecha o modal
 document.addEventListener("keydown", (e) => {
 	if (
 		e.key === "Escape" &&

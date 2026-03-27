@@ -1,53 +1,53 @@
 {
-  "name": "Autotech Sistemas",
-  "short_name": "Autotech",
-  "description": "Software sob medida para o setor automotivo — sites, ERPs e e-commerces.",
-  "start_url": "/portfolio",
-  "display": "standalone",
-  "background_color": "#0d0d0d",
-  "theme_color": "#f62500",
-  "lang": "pt-BR",
-  "dir": "ltr",
-  "orientation": "portrait-primary",
-  "categories": ["business", "productivity"],
-  "icons": [
-    {
-      "src": "/img/favicon-16x16.png",
-      "sizes": "16x16",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/img/favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/img/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/img/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/img/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/img/og-image.jpg",
-      "sizes": "1200x630",
-      "type": "image/jpeg",
-      "label": "Portfólio de projetos da Autotech Sistemas"
-    }
-  ]
+	"name": "Autotech Sistemas",
+	"short_name": "Autotech",
+	"description": "Software sob medida para o setor automotivo — sites, ERPs e e-commerces.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#0d0d0d",
+	"theme_color": "#f62500",
+	"lang": "pt-BR",
+	"dir": "ltr",
+	"orientation": "portrait-primary",
+	"categories": ["business", "productivity"],
+	"icons": [
+		{
+			"src": "/img/favicon/favicon-16x16.png",
+			"sizes": "16x16",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/img/favicon/favicon-32x32.png",
+			"sizes": "32x32",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/img/favicon/apple-touch-icon.png",
+			"sizes": "180x180",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "/img/favicon/android-chrome-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/img/favicon/android-chrome-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any maskable"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "/img/og-image-autotech.png",
+			"sizes": "1200x630",
+			"type": "image/jpeg",
+			"label": "Portfólio de projetos da Autotech Sistemas"
+		}
+	]
 }

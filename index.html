@@ -68,20 +68,38 @@
 		/>
 
 		<!-- ─── FAVICON ──────────────────────────────────────────── -->
+		<!-- ─── FAVICON ──────────────────────────────────────────── -->
 		<link
 			rel="icon"
 			type="image/png"
-			sizes="96x96"
-			href="img/favicon/favicon-96x96.png"
+			sizes="16x16"
+			href="img/favicon/favicon-16x16.png"
 		/>
-		<link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico" />
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="img/favicon/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="192x192"
+			href="img/favicon/android-chrome-192x192.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="512x512"
+			href="img/favicon/android-chrome-512x512.png"
+		/>
 		<link
 			rel="apple-touch-icon"
 			sizes="180x180"
 			href="img/favicon/apple-touch-icon.png"
 		/>
-		<link rel="icon" type="image/svg+xml" href="img/favicon/favicon.svg" />
-		<link rel="manifest" href="site.webmanifest" />
+		<link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico" />
+		<link rel="manifest" href="img/favicon/site.webmanifest" />
 		<meta name="theme-color" content="#0f0f0f" />
 
 		<!-- ─── SCHEMA.ORG (JSON-LD) ─────────────────────────────── -->
@@ -149,6 +167,7 @@
 		>
 
 		<!-- ─── NAV ──────────────────────────────────────────────── -->
+		<!-- SUBSTITUA o bloco <nav> existente por este: -->
 		<nav aria-label="Navegação principal">
 			<a
 				href="/"
@@ -171,6 +190,8 @@
 					/>
 				</div>
 			</a>
+
+			<!-- Links desktop (visíveis acima de 768px) -->
 			<div class="nav-links" role="list">
 				<a
 					href="https://autotechsistemas.com.br/"
@@ -201,7 +222,67 @@
 					>Solicitar orçamento →</a
 				>
 			</div>
+
+			<!-- Botão hamburguer (visível abaixo de 768px) -->
+			<button
+				class="nav-hamburger"
+				id="navHamburger"
+				aria-expanded="false"
+				aria-controls="mobileMenu"
+				aria-label="Abrir menu"
+			>
+				<span class="bar"></span>
+				<span class="bar"></span>
+				<span class="bar"></span>
+			</button>
 		</nav>
+
+		<!-- ─── MENU MOBILE ───────────────────────────────────────── -->
+		<!-- ADICIONE este bloco logo APÓS o </nav>, antes do <div class="page"> -->
+		<div
+			class="mobile-menu"
+			id="mobileMenu"
+			role="navigation"
+			aria-label="Menu mobile"
+		>
+			<a
+				href="https://autotechsistemas.com.br/"
+				target="_blank"
+				class="mob-link"
+				>Início</a
+			>
+			<a
+				href="https://autotechsistemas.com.br/#pricing"
+				target="_blank"
+				class="mob-link"
+				>Planos</a
+			>
+			<a
+				href="https://portfolio.autotechsistemas.com.br/"
+				class="mob-link active"
+				aria-current="page"
+				>Portfólio</a
+			>
+			<div class="mob-divider" role="separator" aria-hidden="true"></div>
+			<a
+				href="https://api.whatsapp.com/send/?phone=5511992467155&text=Ol%C3%A1%2C+vim+pelo+site+e+gostaria+de+saber+mais+sobre+os+planos+da+Autotech.&type=phone_number&app_absent=0"
+				target="_blank"
+				class="mob-cta"
+			>
+				Solicitar orçamento
+				<svg
+					width="14"
+					height="14"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2.5"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path d="m22 2-7 20-4-9-9-4 20-7z" />
+				</svg>
+			</a>
+		</div>
 
 		<!-- ─── CONTEÚDO PRINCIPAL ───────────────────────────────── -->
 		<div class="page" id="main-content">
