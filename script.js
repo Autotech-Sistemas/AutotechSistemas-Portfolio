@@ -127,6 +127,28 @@ const projects = [
 		link: "https://autopecas.autotechsistemas.com.br/",
 	},
 	{
+        id: 6,
+        cat: "Site Institucional",
+        title: "AutoEstética — Detailing de Luxo & Proteção Cerâmica",
+        client: "Projeto Demonstração",
+        year: 2026,
+        desc: "Plataforma digital com agendamento integrado para serviços de polimento espelhado, proteção cerâmica, películas PPF e higienização a vapor focada em veículos de alto padrão.",
+        techs: ["HTML5", "CSS3", "JavaScript", "Schema.org", "Tailwind CSS"],
+        features: [
+            "Agendamento de serviços integrado",
+            "Catálogo detalhado de pacotes (Essencial, Premium, Elite)",
+            "Galeria de portfólio dividida por categorias",
+            "FAQ interativo",
+        ],
+        metrics: [
+            { val: "+Brilho", lbl: "intenso", color: "red" },
+            { val: "+Proteção", lbl: "cerâmica", color: "yellow" },
+            { val: "−Riscos", lbl: "na pintura", color: "blue" },
+        ],
+        imgSrc: "img/autoestetica.png",
+        link: "https://autoestetica.autotechsistemas.com.br/",
+    },
+	{
 		id: 7,
 		cat: "ERP / Desktop",
 		title: "AutoEstoque — Controle de Estoque Industrial",
